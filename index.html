@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌱 Precision Fertilizer Recommendation System</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a class="brand" data-view-target="home-view">
+        <div class="brand-icon">🌱</div>
+        <div>
+          <span>AgriFert</span>
+          <small style="display:block; font-size: 0.68rem; color: #059669; font-weight: 500;">Recommendation Engine</small>
+        </div>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a class="nav-link active" data-view-target="home-view">Home</a></li>
+        <li><a class="nav-link" data-view-target="dashboard-view">Farmer Dashboard</a></li>
+        <li><a class="nav-link" data-view-target="recommendation-form-view">New Recommendation</a></li>
+        <li><a class="nav-link" data-view-target="history-view">History</a></li>
+      </ul>
+
+      <!-- User Auth Status -->
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div id="userNavContainer" class="user-badge" style="display: none;">
+          <div class="user-avatar">👨‍🌾</div>
+          <span id="loggedUserName">Farmer</span>
+          <button id="logoutBtn" class="btn btn-outline btn-sm" style="padding: 2px 8px; font-size: 0.75rem; border-radius: 12px;">Logout</button>
+        </div>
+
+        <div id="guestNavContainer" style="display: flex; gap: 8px;">
+          <button id="loginNavBtn" class="btn btn-outline btn-sm">Login</button>
+          <button id="registerNavBtn" class="btn btn-primary btn-sm">Register</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+
+    <!-- 1. HOME VIEW -->
+    <section id="home-view" class="view-section active">
+      <div class="hero">
+        <div class="hero-pill">🌾 Smart Agronomy & Soil Science</div>
+        <h1 class="hero-title">Optimize Your Crop Yield With <span>Precision Fertilizer</span> Recommendations</h1>
+        <p class="hero-subtitle">
+          Intelligent diagnostic engine matching your field's Nitrogen, Phosphorus, Potassium, and pH test values against scientific crop nutritional requirements.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" data-view-target="recommendation-form-view">🚀 Get Recommendation</button>
+          <button class="btn btn-outline" data-view-target="dashboard-view">📊 Open Farmer Dashboard</button>
+        </div>
+      </div>
+
+      <!-- Feature Grid -->
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🌿</div>
+          <h3>Crop Nutrient Modeling</h3>
+          <p>Pre-calibrated agronomic profiles for Rice, Wheat, Maize, Cotton, Sugarcane, Vegetables, and Pulses.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🧪</div>
+          <h3>Soil Chemistry & pH</h3>
+          <p>Comprehensive pH analysis diagnosing acidity and alkalinity with Agricultural Lime and Gypsum advisories.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⚖️</div>
+          <h3>Custom Fertilizer Dosage</h3>
+          <p>Accurate dosages for Urea, DAP, SSP, MOP, and NPK complexes calculated per acre and per hectare.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🌦️</div>
+          <h3>Weather & Moisture Alerts</h3>
+          <p>Precise split-application schedules considering soil texture, soil moisture, and ambient temperature.</p>
+        </div>
+      </div>
+
+      <!-- Quick Info Banner -->
+      <div class="card" style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-color: #86efac; text-align: center;">
+        <h2 style="color: #065f46; margin-bottom: 8px;">Ready to test your soil samples?</h2>
+        <p style="color: #166534; margin-bottom: 18px;">Click below to select sample test presets or input your custom soil lab values.</p>
+        <button class="btn btn-primary" data-view-target="recommendation-form-view">Start Recommendation Now →</button>
+      </div>
+    </section>
+
+    <!-- 2. FARMER DASHBOARD VIEW -->
+    <section id="dashboard-view" class="view-section">
+      <div class="card" style="background: linear-gradient(135deg, #064e3b, #047857); color: white; margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <span style="background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; text-transform: uppercase;">Farmer Portal</span>
+            <h2 id="dashFarmerName" style="font-size: 1.8rem; margin-top: 6px;">Ramesh Kumar</h2>
+            <p style="opacity: 0.9;" id="dashFarmerLoc">Punjab, India • Active Cultivator</p>
+          </div>
+          <div>
+            <button class="btn" style="background: white; color: #064e3b;" data-view-target="recommendation-form-view">+ New Soil Test</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon green">📋</div>
+          <div class="stat-info">
+            <h4>Total Tests Run</h4>
+            <div id="dashTotalRecs" class="stat-value">0</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon blue">🌾</div>
+          <div class="stat-info">
+            <h4>Catalog Crops</h4>
+            <div class="stat-value">10+</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon amber">🧪</div>
+          <div class="stat-info">
+            <h4>Engine Status</h4>
+            <div class="stat-value" style="color: #10b981; font-size: 1.3rem;">● Connected</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon purple">🎯</div>
+          <div class="stat-info">
+            <h4>Dosage Standard</h4>
+            <div class="stat-value" style="font-size: 1.3rem;">ICAR Agronomy</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">⚡ Quick Shortcuts</h3>
+        </div>
+        <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+          <button class="btn btn-primary" data-view-target="recommendation-form-view">Run Soil Analysis</button>
+          <button class="btn btn-secondary" data-view-target="history-view">View Recommendation History</button>
+          <button class="btn btn-outline" onclick="window.open('http://localhost:8080/swagger-ui.html', '_blank')">Open REST API Docs (Swagger)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. FARMER INPUT FORM VIEW -->
+    <section id="recommendation-form-view" class="view-section">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">🌾 Soil Diagnostics & Crop Input Form</h2>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Step 1: Input your parameters</span>
+        </div>
+
+        <!-- Quick Presets Bar -->
+        <div class="preset-bar">
+          <span class="preset-title">⚡ Quick 1-Click Test Presets:</span>
+          <button type="button" class="preset-btn" id="presetRiceLowN">Paddy (Low Nitrogen)</button>
+          <button type="button" class="preset-btn" id="presetWheatLowP">Wheat (Low Phosphorus)</button>
+          <button type="button" class="preset-btn" id="presetPotatoLowK">Potato (Low Potash)</button>
+          <button type="button" class="preset-btn" id="presetBalanced">Maize (Balanced Soil)</button>
+        </div>
+
+        <form id="recommendationForm">
+          <div class="form-grid">
+
+            <!-- Crop Selection -->
+            <div class="form-group">
+              <label for="cropSelect">Target Crop Name *</label>
+              <select id="cropSelect" class="form-control" required>
+                <option value="" disabled selected>Loading crops from database...</option>
+              </select>
+              <div class="form-hint">Select the crop you plan to cultivate</div>
+            </div>
+
+            <!-- Soil Type -->
+            <div class="form-group">
+              <label for="soilType">Soil Texture / Type *</label>
+              <select id="soilType" class="form-control" required>
+                <option value="Alluvial / Loamy" selected>Alluvial / Loamy Soil</option>
+                <option value="Black / Regur Soil">Black / Regur Soil</option>
+                <option value="Red & Yellow Soil">Red & Yellow Soil</option>
+                <option value="Sandy Loam">Sandy Loam</option>
+                <option value="Clayey Soil">Clayey Soil</option>
+                <option value="Laterite Soil">Laterite Soil</option>
+              </select>
+              <div class="form-hint">Affects leaching and split application intervals</div>
+            </div>
+
+            <!-- Nitrogen -->
+            <div class="form-group">
+              <label for="inputN">Nitrogen (N) [kg/ha] *</label>
+              <input type="number" step="0.1" id="inputN" class="form-control" placeholder="e.g. 45" value="45" required>
+              <div class="form-hint">Available soil Nitrogen level from soil card</div>
+            </div>
+
+            <!-- Phosphorus -->
+            <div class="form-group">
+              <label for="inputP">Phosphorus (P) [kg/ha] *</label>
+              <input type="number" step="0.1" id="inputP" class="form-control" placeholder="e.g. 25" value="25" required>
+              <div class="form-hint">Available P₂O₅ in soil</div>
+            </div>
+
+            <!-- Potassium -->
+            <div class="form-group">
+              <label for="inputK">Potassium (K) [kg/ha] *</label>
+              <input type="number" step="0.1" id="inputK" class="form-control" placeholder="e.g. 35" value="35" required>
+              <div class="form-hint">Available K₂O in soil</div>
+            </div>
+
+            <!-- Soil pH with slider -->
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <label for="phInput" style="margin-bottom: 0;">Soil pH Level *</label>
+                <span id="phBadge" class="badge badge-optimal">Optimal</span>
+              </div>
+              <div style="display: flex; gap: 12px; align-items: center;">
+                <input type="range" id="phSlider" min="4.0" max="10.0" step="0.1" value="6.5" style="flex: 1; accent-color: var(--primary);">
+                <input type="number" step="0.1" id="phInput" class="form-control" style="width: 85px;" value="6.5" min="0" max="14" required>
+              </div>
+              <div class="form-hint">4.0 (Very Acidic) to 10.0 (Very Alkaline)</div>
+            </div>
+
+            <!-- Soil Moisture -->
+            <div class="form-group">
+              <label for="inputMoisture">Soil Moisture (%)</label>
+              <input type="number" step="0.1" id="inputMoisture" class="form-control" placeholder="e.g. 60" value="60">
+              <div class="form-hint">Current moisture saturation percentage</div>
+            </div>
+
+            <!-- Temperature -->
+            <div class="form-group">
+              <label for="inputTemp">Ambient Temperature (°C)</label>
+              <input type="number" step="0.1" id="inputTemp" class="form-control" placeholder="e.g. 28" value="28">
+              <div class="form-hint">Influences urea volatilization loss</div>
+            </div>
+
+            <!-- Humidity -->
+            <div class="form-group">
+              <label for="inputHumidity">Relative Humidity (%)</label>
+              <input type="number" step="0.1" id="inputHumidity" class="form-control" placeholder="e.g. 65" value="65">
+              <div class="form-hint">Local atmospheric humidity</div>
+            </div>
+
+            <!-- Season -->
+            <div class="form-group">
+              <label for="inputSeason">Cultivation Season *</label>
+              <select id="inputSeason" class="form-control" required>
+                <option value="Kharif (Monsoon)" selected>Kharif (Monsoon Season)</option>
+                <option value="Rabi (Winter)">Rabi (Winter Season)</option>
+                <option value="Zaid (Summer)">Zaid (Summer Season)</option>
+                <option value="Perennial / All Year">Perennial / All Year</option>
+              </select>
+              <div class="form-hint">Planting timeline</div>
+            </div>
+
+          </div>
+
+          <div style="margin-top: 24px; display: flex; gap: 12px;">
+            <button type="submit" id="submitBtn" class="btn btn-primary" style="padding: 12px 30px; font-size: 1.05rem;">
+              🌱 Generate Fertilizer Recommendation
+            </button>
+            <button type="reset" class="btn btn-outline">Reset Form</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 4. RECOMMENDATION RESULT VIEW -->
+    <section id="result-view" class="view-section">
+      <div class="result-banner">
+        <div class="result-main">
+          <h2>Recommended Primary Fertilizer</h2>
+          <div id="resFertilizerName" class="result-fertilizer-name">Neem-Coated Urea (46% N)</div>
+          <div style="margin-top: 8px; opacity: 0.9;">
+            Target Crop: <strong id="resCropName">Rice</strong> • Soil: <strong id="resSoilType">Clayey</strong>
+          </div>
+        </div>
+        <div class="result-dosage">
+          <div class="result-dosage-label">Recommended Dosage</div>
+          <div id="resDosage" class="result-dosage-value">50 kg / acre</div>
+        </div>
+      </div>
+
+      <!-- Nutrient Breakdown Grid -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">📊 Soil Nutrient Gap & Diagnostic Breakdown</h3>
+          <div style="display: flex; gap: 8px;">
+            <span>Soil Health Score:</span>
+            <strong id="resHealthScore" style="color: #059669; font-size: 1.1rem;">85 / 100</strong>
+          </div>
+        </div>
+
+        <div id="resNutrientBars">
+          <!-- Dynamically populated via JS -->
+        </div>
+
+        <!-- Nutrient Summary Pills -->
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-color);">
+          <span style="font-size: 0.85rem; color: var(--text-muted); align-self: center;">Status Summary:</span>
+          <div>Nitrogen: <span id="resStatusN" class="badge badge-low">Low</span></div>
+          <div>Phosphorus: <span id="resStatusP" class="badge badge-optimal">Optimal</span></div>
+          <div>Potassium: <span id="resStatusK" class="badge badge-optimal">Optimal</span></div>
+          <div>pH Status: <span id="resStatusPh" class="badge badge-optimal">Optimal</span></div>
+        </div>
+      </div>
+
+      <!-- Application Method and Instructions -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">📋 Application Method & Schedule</h3>
+        </div>
+        <div style="margin-bottom: 16px;">
+          <strong>Application Technique: </strong>
+          <span id="resMethod" style="color: #047857; font-weight: 600;">Split Top-Dressing</span>
+        </div>
+        <h4>Step-by-Step Agronomic Instructions:</h4>
+        <div id="resInstructions" class="instruction-box">
+          1. Apply basal dose before sowing.
+          2. Split remaining dose at tillering.
+        </div>
+
+        <h4>Soil Health & Organic Advisory:</h4>
+        <div id="resOrganicAdvice" class="advice-box">
+          Maintain organic matter with vermicompost.
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap;">
+          <button class="btn btn-outline" onclick="window.print()">🖨️ Print / Save PDF</button>
+          <button class="btn btn-primary" data-view-target="recommendation-form-view">Run Another Recommendation</button>
+          <button class="btn btn-secondary" data-view-target="history-view">View Previous Recommendations</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. HISTORY VIEW -->
+    <section id="history-view" class="view-section">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">📜 Recommendation History</h2>
+          <div style="display: flex; gap: 10px;">
+            <input type="text" id="historySearchInput" class="form-control" style="width: 240px; padding: 6px 12px;" placeholder="Search crop or fertilizer...">
+            <button class="btn btn-outline btn-sm" onclick="refreshHistory()">🔄 Refresh</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Crop</th>
+                <th>Soil Type</th>
+                <th>Recommended Fertilizer</th>
+                <th>Dosage</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+
+        <div id="historyEmptyState" style="text-align: center; padding: 50px 20px; display: none;">
+          <div style="font-size: 3rem; margin-bottom: 12px;">🌾</div>
+          <h3>No recommendations recorded yet</h3>
+          <p style="color: var(--text-muted); margin-bottom: 20px;">Run a soil test to generate and save your first personalized fertilizer plan.</p>
+          <button class="btn btn-primary" data-view-target="recommendation-form-view">Create First Recommendation</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal-backdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">👨‍🌾 Farmer Login</h3>
+        <button class="close-btn close-modal-btn">&times;</button>
+      </div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="loginEmail">Email Address</label>
+          <input type="email" id="loginEmail" class="form-control" required placeholder="farmer@example.com">
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" class="form-control" required placeholder="••••••••">
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+          <button type="submit" class="btn btn-primary" style="flex: 1;">Login</button>
+          <button type="button" id="loadDemoUserBtn" class="btn btn-outline" style="font-size: 0.85rem;">Use Demo Farmer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div id="registerModal" class="modal-backdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">🌾 Register Farmer Account</h3>
+        <button class="close-btn close-modal-btn">&times;</button>
+      </div>
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="regName">Full Name *</label>
+          <input type="text" id="regName" class="form-control" required placeholder="e.g. Suresh Patel">
+        </div>
+        <div class="form-group">
+          <label for="regEmail">Email Address *</label>
+          <input type="email" id="regEmail" class="form-control" required placeholder="suresh@example.com">
+        </div>
+        <div class="form-group">
+          <label for="regPassword">Password *</label>
+          <input type="password" id="regPassword" class="form-control" required minlength="6" placeholder="At least 6 characters">
+        </div>
+        <div class="form-group">
+          <label for="regPhone">Mobile Number</label>
+          <input type="tel" id="regPhone" class="form-control" placeholder="9876543210">
+        </div>
+        <div class="form-group">
+          <label for="regLocation">Farm Location / State</label>
+          <input type="text" id="regLocation" class="form-control" placeholder="e.g. Gujarat, India">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">Create Account</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast">Action completed</div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>🌱 <strong>Precision Fertilizer Recommendation System</strong> • Java Spring Boot & REST APIs • MySQL Database</p>
+      <p style="font-size: 0.8rem; margin-top: 4px;">Designed to empower farmers with scientific nutrient diagnosis and sustainable agriculture practices.</p>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
