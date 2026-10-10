@@ -1,0 +1,11 @@
+backend/target/
+Frontend/node_modules/
+Frontend/dist/
+.idea/
+.vscode/
+*.class
+.env
+.env.*
+!.env.example
+Frontend/.env*
+backend/.env*
